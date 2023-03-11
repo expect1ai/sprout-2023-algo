@@ -1,36 +1,51 @@
-#pragma GCC optimize("Ofast")
-#include <bits/stdc++.h>
-#define fastio ios::sync_with_stdio(0),cin.tie(0),cout.tie(0)
-#define int long long
-#define endl '\n'
+#include <vector>
+#include <stack>
 using namespace std;
-int n,t;
-signed main(){
-    fastio;
-    cin>>t;
-    while(t--){
-        cin>>n;
-        stack<int> s;
-        
-        int ans = 0,cnt[1000003];
-        memset(cnt, 0, sizeof(cnt));
-        while(n--){
-            int k,top = s.size();cin>>k;
-            
-            while(!s.empty() && s.top()<k){
-                cnt[top--] = 0;
-                s.pop();
-                ans++;
+void solve(int N, int order[]) {
+    vector<int> loc(N+1,0);
+    stack<int> places;
+    for (int i = N; i >= 1; i--) {
+        places.push(i);
+    }
+    stack<int> first_station;
+    stack<int> second_station;
+    for (int i = 0; i < N; i++) {
+        if (loc[order[i]] == 0) {
+            while (places.top() != order[i]) {
+                loc[places.top()] = 1;
+                int temp = places.top();
+                first_station.push(temp);
+                places.pop();
+                push_train();
             }
-            if(s.empty())s.push(k);
-            else{
-                if(s.top()==k && top>1){
-                    cnt[top+1]+=cnt[top]+1;
-                    ans+=cnt[top+1];
-                }
-                s.push(k);ans++;
+            places.pop();
+            loc[order[i]] = 3;
+            push_train();
+            move_station_1_to_2();
+            pop_train();
+        } else if (loc[order[i]] == 1) {
+            while (first_station.top() != order[i]) {
+                loc[first_station.top()] = 2;
+                int temp = first_station.top();
+                second_station.push(temp);
+                first_station.pop();
+                move_station_1_to_2();
             }
+            first_station.pop();
+            loc[order[i]] = 3;
+            move_station_1_to_2();
+            pop_train();
+        } else if (loc[order[i]] == 2) {
+            while (second_station.top() != order[i]) {
+                loc[second_station.top()] = 1;
+                int temp = second_station.top();
+                first_station.push(temp);
+                second_station.pop();
+                move_station_2_to_1();
+            }
+            second_station.pop();
+            loc[order[i]] = 3;
+            pop_train();
         }
-        cout<<ans<<endl;
     }
 }
