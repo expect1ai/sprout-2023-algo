@@ -1,0 +1,18 @@
+{
+    "code-runner.ignoreSelection": true,
+    "code-runner.executorMap": {
+        "cpp": "cd $dir & g++ -Wall -Wextra -O2 -std=c++17 \"$fileName\" -o \"$fileNameWithoutExt\" & $dir\"$fileNameWithoutExt\""
+    },
+    "code-runner.preserveFocus": false,
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.runInTerminal": true,
+    "code-runner.saveFileBeforeRun": true,
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "files.associations": {
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp"
+    },
+}
